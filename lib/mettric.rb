@@ -1,5 +1,13 @@
-require "mettric/version"
+require 'bundler'
+Bundler.require
 
-module Mettric
-  # Your code goes here...
+require 'mettric/version'
+require 'mettric/mettric'
+
+class Mettric
+  include Mettric
+
+  class << self
+    attr_accessor :config
+  end
 end
