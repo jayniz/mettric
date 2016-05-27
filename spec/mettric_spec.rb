@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe Mettric do
   context 'worker thread' do
+    it "doesn't mind if there is no mettric configured" do
+      expect{
+        🌡 service: 'My Service', metric: 22.02
+      }.to_not raise_error
+    end
+
     it 'tracks in the background' do
       Mettric.config = {
         poll_intervall: 300,

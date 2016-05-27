@@ -21,7 +21,6 @@ class Mettric
     return if worker_running?
     LOCK.synchronize do
       return if worker_running?
-      puts "starts worker: #{self}"
       start_worker
     end
   end
@@ -31,7 +30,6 @@ class Mettric
   end
 
   def self.start_worker
-    puts "*"*80
     exception = nil
     worker = Mettric::Worker.new(QUEUE, @config)
     @worker_thread = Thread.new do
