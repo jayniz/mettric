@@ -2,16 +2,9 @@ require 'bundler'
 Bundler.require
 
 require 'mettric/version'
+require 'mettric/errors'
+require 'mettric/client'
+require 'mettric/worker'
 require 'mettric/mettric'
+require 'mettric/thermometer'
 
-class Mettric
-  include Mettric
-
-  class << self
-    attr_accessor :config
-  end
-end
-
-def ⚡️
-  Mettric
-end
