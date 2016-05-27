@@ -29,13 +29,27 @@ describe Mettric do
         }
       end
 
-      it 'supports new blocks' do
-        payload = {metric: 12.5, host: 'test_host', service: 'test_app.service'}
-        expect_any_instance_of(Riemann::Client).to receive(:<<).with(payload)
-        Mettric.new do |client|
-          client << {service: :service, metric: 12.5}
+      it 'tracking metrics defaults to tcp' do
+        payload = {service: 'test_app.My Service', metric: 12.5, host: `hostname`.chomp, }
+        tcp = double(:tcp)
+        expect(tcp).to receive(:<<).with(payload)
+        expect_any_instance_of(Riemann::Client).to receive(:tcp).and_return(tcp)
+        Mettric.new do |mett|
+          mett << {service: 'My Service', metric: 12.5}
         end
       end
+
+      context 'delegating other methods' do
+        [:[], :close, :connected?].each do |method|
+          it "#{method}" do
+            expect_any_instance_of(Riemann::Client).to receive(method).at_least(1)
+            Mettric.new do |mett|
+              mett.send(method)
+            end
+          end
+        end
+      end
+
     end
   end
 end

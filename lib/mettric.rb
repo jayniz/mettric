@@ -11,3 +11,7 @@ class Mettric
     attr_accessor :config
   end
 end
+
+def ⚡️
+  Mettric
+end

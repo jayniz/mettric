@@ -20,7 +20,7 @@ class Mettric
       )
 
       self.app  = (@config[:app] || rails_app_name).to_s.underscore
-      self.host = (@config[:host] || host_name).to_s.underscore
+      self.host = (@config[:reporting_host] || host_name).to_s.underscore
 
 
       if block_given?
@@ -43,10 +43,7 @@ class Mettric
     end
 
     def <<(payload)
-      p = payload.with_indifferent_access
-      p[:host] = host
-      p[:service] = "#{app}.#{p[:service]}"
-      @riemann << p.to_hash.symbolize_keys
+      @riemann.tcp << standardize_payload(payload)
     end
 
     def [](*args)
@@ -62,6 +59,13 @@ class Mettric
     end
 
     private
+
+    def standardize_payload(payload)
+      out = payload.symbolize_keys
+      out[:host] = host
+      out[:service] = "#{app}.#{out[:service]}"
+      out
+    end
 
     def rails_app_name
       return unless Kernel.const_defined?(:Rails)
