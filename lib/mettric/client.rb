@@ -39,6 +39,8 @@ class Mettric::Client
 
   def <<(payload)
     @riemann.tcp << standardize_payload(payload)
+  rescue => e
+    @riemann.tcp << { service: 'Mettric error', description: e.to_s }
   end
 
   def [](*args)
@@ -58,6 +60,8 @@ class Mettric::Client
   def standardize_payload(payload)
     out = payload.symbolize_keys
     raise Mettric::MissingService, out if out[:service].blank?
+    out[:tags] ||= []
+    out[:tags] << 'mettric'
     out[:host] = host
     out[:service] = "#{app}.#{out[:service]}"
     out

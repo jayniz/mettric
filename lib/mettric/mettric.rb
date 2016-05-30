@@ -13,6 +13,7 @@ class Mettric
   end
 
   def self.track(payload)
+    return false unless @config
     ensure_worker_running
     QUEUE << payload
     QUEUE.size
