@@ -15,6 +15,7 @@ class Mettric
   def self.track(payload)
     ensure_worker_running
     QUEUE << payload
+    QUEUE.size
   end
 
   def self.ensure_worker_running
@@ -26,7 +27,7 @@ class Mettric
   end
 
   def self.worker_running?
-    @worker_thread and @worker_thread.alive?
+    @worker_thread && @worker_thread.alive?
   end
 
   def self.start_worker

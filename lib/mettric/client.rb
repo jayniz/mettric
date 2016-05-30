@@ -57,6 +57,7 @@ class Mettric::Client
 
   def standardize_payload(payload)
     out = payload.symbolize_keys
+    raise Mettric::MissingService, out if out[:service].blank?
     out[:host] = host
     out[:service] = "#{app}.#{out[:service]}"
     out
