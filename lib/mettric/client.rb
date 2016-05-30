@@ -4,7 +4,7 @@ require 'active_support/core_ext/object/blank'
 require 'riemann/client'
 
 class Mettric::Client
-  attr_reader :app, :host
+  attr_reader :app, :host, :env
 
   def initialize(config = ::Mettric.config)
     @config = config || {}
@@ -16,6 +16,7 @@ class Mettric::Client
 
     self.app  = (@config[:app] || rails_app_name).to_s.underscore
     self.host = (@config[:reporting_host] || host_name).to_s.underscore
+    self.env = (@config[:env] || rails_env).to_s.underscore
 
 
     if block_given?
@@ -35,6 +36,10 @@ class Mettric::Client
   def host=(host_name)
     raise Mettric::MissingHostName if host_name.blank?
     @host = host_name
+  end
+
+  def env=(env)
+    @env = env
   end
 
   def <<(payload)
@@ -62,6 +67,7 @@ class Mettric::Client
     raise Mettric::MissingService, out if out[:service].blank?
     out[:tags] ||= []
     out[:tags] << 'mettric'
+    out[:tags] << env if env.present?
     out[:host] = host
     out[:service] = "#{app}.#{out[:service]}"
     out
@@ -70,6 +76,11 @@ class Mettric::Client
   def rails_app_name
     return unless Kernel.const_defined?(:Rails)
     Rails.application.class.parent.to_s.underscore
+  end
+
+  def rails_env
+    return unless Kernel.const_defined?(:Rails)
+    Rails.env
   end
 
   def host_name
