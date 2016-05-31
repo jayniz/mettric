@@ -46,8 +46,12 @@ describe Mettric::SidekiqMiddleware do
     end
 
     it 'true' do
-      expect(Mettric).to receive(:time)
-      Mettric::SidekiqMiddleware.new({}).call(TrueWorker.new, :msg, :queue) do
+      expected = {
+        service: 'sidekiq.queue:my_queue.worker:true_worker ms',
+        tags: ['sidekiq']
+      }
+      expect(Mettric).to receive(:time).with(expected)
+      Mettric::SidekiqMiddleware.new({}).call(TrueWorker.new, {}, :my_queue) do
         puts :noop
       end
     end

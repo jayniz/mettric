@@ -13,7 +13,7 @@ class Mettric::SidekiqMiddleware
     end
 
     # Track the job timing
-    service = "sidekiq.queue.#{queue}.workers.#{worker.class.name.underscore}",
+    service = "sidekiq.queue:#{queue.to_s.underscore}.worker:#{worker.class.name.underscore} ms"
     Mettric.time(service: service, tags: ['sidekiq']) do
       yield
     end
