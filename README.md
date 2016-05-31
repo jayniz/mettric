@@ -20,3 +20,12 @@ Mettric.config = {
 ```ruby
 🌡 service: 'Rails req/s', metric: 400, state: 'normal'
 ```
+
+## Time things
+
+```ruby
+# This will track the duration in milliseconds as the `metric` value
+⏱ (service: 'Duration of sleeping 1 sec') do
+  sleep 1
+end
+```
