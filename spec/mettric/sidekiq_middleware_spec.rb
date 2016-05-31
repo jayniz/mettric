@@ -25,7 +25,7 @@ describe Mettric::SidekiqMiddleware do
   context 'checking the mettric sidekiq option' do
 
     it 'null' do
-      expect(Mettric).to_not receive(:time)
+      expect(Mettric).to receive(:time)
       Mettric::SidekiqMiddleware.new({}).call(NullWorker.new, :msg, :queue) do
         puts :noop
       end

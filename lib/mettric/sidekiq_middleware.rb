@@ -8,7 +8,7 @@ class Mettric::SidekiqMiddleware
     opts = worker.class.sidekiq_options['mettric']
 
     # Don't do anything if we're told to skip this class
-    if opts != true
+    if opts != true and opts != nil
       return yield
     end
 
@@ -19,3 +19,12 @@ class Mettric::SidekiqMiddleware
     end
   end
 end
+
+if Kernel.const_defined?(:Sidekiq)
+  Sidekiq.configure_server do |config|
+    config.server_middleware do |chain|
+      chain.add Mettric::SidekiqMiddleware
+    end
+  end
+end
+
