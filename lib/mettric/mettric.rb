@@ -19,6 +19,23 @@ class Mettric
     QUEUE.size
   end
 
+  def self.time(payload)
+    exception = nil
+    state = 'success'
+    start = Time.now
+    begin
+      yield
+    rescue => e
+      exception = e
+      state = 'failure'
+    end
+    payload[:service] = "#{payload[:service]} ms" unless payload[:service].to_s.end_with?(' ms')
+    payload[:metric] = ((Time.now - start) * 1000).to_i
+    payload[:tags] ||= []
+    payload[:tags] << 'timing'
+    track(payload)
+  end
+
   def self.ensure_worker_running
     return if worker_running?
     LOCK.synchronize do

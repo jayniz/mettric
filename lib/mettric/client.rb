@@ -45,7 +45,7 @@ class Mettric::Client
   def <<(payload)
     @riemann.tcp << standardize_payload(payload)
   rescue => e
-    @riemann.tcp << { service: 'Mettric error', description: e.to_s }
+    track_exception(e, payload)
   end
 
   def [](*args)
@@ -62,15 +62,31 @@ class Mettric::Client
 
   private
 
+  def track_exception(e, payload)
+    @riemann.tcp << { service: 'Mettric error', description: e.to_s }
+    return unless Kernel.const_defined?(:NewRelic)
+    NewRelic::Agent.notice_error(e, payload) rescue nil
+  end
+
   def standardize_payload(payload)
-    out = payload.symbolize_keys
+    out = stringify(payload)
     raise Mettric::MissingService, out if out[:service].blank?
+
     out[:tags] ||= []
     out[:tags] << 'mettric'
     out[:tags] << env if env.present?
+
     out[:host] = host
+
     out[:service] = "#{app}.#{out[:service]}"
     out
+  end
+
+  def stringify(payload)
+    out = payload.symbolize_keys
+    out.each do |k,v|
+      out[k] = v.to_s if v.is_a?(Symbol)
+    end
   end
 
   def rails_app_name

@@ -6,5 +6,6 @@ require 'mettric/errors'
 require 'mettric/client'
 require 'mettric/worker'
 require 'mettric/mettric'
-require 'mettric/thermometer'
+require 'mettric/sidekiq_middleware'
+require 'mettric/scnr'
 

@@ -1,6 +1,16 @@
 require 'spec_helper'
 
 describe Mettric do
+  context 'timing things' do
+    it "times" do
+      expected = hash_including(service: "test_timing ms", metric: instance_of(Fixnum), tags: ["timing"])
+      expect(Mettric).to receive(:track).with(expected)
+      ⏱(service: :test_timing) do
+        '¯\_(ツ)_/¯'
+      end
+    end
+
+  end
   context 'worker thread' do
     it "doesn't mind if there is no mettric configured" do
       expect{
