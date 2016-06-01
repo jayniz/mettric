@@ -59,7 +59,8 @@ class Mettric
       end
     end
     sleep 0.5
-    raise Mettric::CouldNotStartWorkerThread, exception unless @worker_thread.alive?
+    return if @worker_thread.alive?
+    raise Mettric::CouldNotStartWorkerThread, exception
   end
 end
 
