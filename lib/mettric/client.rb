@@ -75,6 +75,7 @@ class Mettric::Client
     out[:tags] ||= []
     out[:tags] << 'mettric'
     out[:tags] << env if env.present?
+    out[:metric] ||= 1
 
     out[:host] = host
 

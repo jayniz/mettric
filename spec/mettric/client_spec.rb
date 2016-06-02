@@ -38,6 +38,16 @@ describe Mettric::Client do
         end
       end
 
+      it 'tracking payloads without a metric sends metric: 1' do
+        expected_payload = {service: 'test_app.My Service', metric: 1, host: `hostname`.chomp, tags: ['mettric'] }
+        tcp = double(:tcp)
+        expect(tcp).to receive(:<<).with(expected_payload)
+        expect_any_instance_of(Riemann::Client).to receive(:tcp).and_return(tcp)
+        Mettric::Client.new do |mett|
+          mett << {service: 'My Service'}
+        end
+      end
+
       context 'delegating other methods' do
         [:[], :close, :connected?].each do |method|
           it "#{method}" do
