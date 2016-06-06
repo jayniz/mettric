@@ -72,8 +72,7 @@ class Mettric::Client
     out = stringify(payload)
     raise Mettric::MissingService, out if out[:service].blank?
 
-    out[:tags] ||= []
-    out[:tags] << 'mettric'
+    out[:tags] = [out[:tags], :mettric].flatten.compact.uniq
     out[:tags] << env if env.present?
     out[:metric] ||= 1
 

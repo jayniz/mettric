@@ -29,7 +29,7 @@ describe Mettric::Client do
       end
 
       it 'tracking metrics defaults to tcp' do
-        expected_payload = {service: 'test_app.My Service', metric: 12.5, host: `hostname`.chomp, tags: ['mettric'] }
+        expected_payload = {service: 'test_app.My Service', metric: 12.5, host: `hostname`.chomp, tags: [:mettric] }
         tcp = double(:tcp)
         expect(tcp).to receive(:<<).with(expected_payload)
         expect_any_instance_of(Riemann::Client).to receive(:tcp).and_return(tcp)
@@ -39,7 +39,7 @@ describe Mettric::Client do
       end
 
       it 'tracking payloads without a metric sends metric: 1' do
-        expected_payload = {service: 'test_app.My Service', metric: 1, host: `hostname`.chomp, tags: ['mettric'] }
+        expected_payload = {service: 'test_app.My Service', metric: 1, host: `hostname`.chomp, tags: [:mettric] }
         tcp = double(:tcp)
         expect(tcp).to receive(:<<).with(expected_payload)
         expect_any_instance_of(Riemann::Client).to receive(:tcp).and_return(tcp)

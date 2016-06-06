@@ -15,7 +15,7 @@ class Mettric::Worker
 
   def loop
     Mettric::Client.new(@config) do |client|
-      deliver(client,  service: 'mettric.worker.start') rescue nil
+      deliver(client,  service: 'mettric.worker.start', metric: 1) rescue nil
       while payload = @queue.pop
         deliver(client, payload)
       end

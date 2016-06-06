@@ -1,9 +1,16 @@
 require 'spec_helper'
 
 describe Mettric do
+  context 'counting events' do
+    it 'adds the event tag' do
+      expected = hash_including(service: :ding, tags: [:event])
+      expect(Mettric).to receive(:track).with(expected)
+      🛎 service: :ding
+    end
+  end
   context 'timing things' do
     it "times" do
-      expected = hash_including(service: "test_timing ms", metric: instance_of(Fixnum), tags: ["timing"])
+      expected = hash_including(service: "test_timing ms", metric: instance_of(Fixnum), tags: [:timing])
       expect(Mettric).to receive(:track).with(expected)
       ⏱(service: :test_timing) do
         '¯\_(ツ)_/¯'

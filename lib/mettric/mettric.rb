@@ -19,6 +19,19 @@ class Mettric
     QUEUE.size
   end
 
+  # Tracking meter readings is the default
+  def self.meter(payload)
+    track(payload)
+  end
+
+  # To track events
+  def self.event(payload)
+    payload[:tags] ||= []
+    payload[:tags] << :event
+    track(payload)
+  end
+
+  # To track durations
   def self.time(payload)
     exception = nil
     state = 'success'
@@ -32,7 +45,7 @@ class Mettric
     payload[:service] = "#{payload[:service]} ms" unless payload[:service].to_s.end_with?(' ms')
     payload[:metric] = ((Time.now - start) * 1000).to_i
     payload[:tags] ||= []
-    payload[:tags] << 'timing'
+    payload[:tags] << :timing
     track(payload)
   end
 
