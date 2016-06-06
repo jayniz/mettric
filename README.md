@@ -15,7 +15,14 @@ Mettric.config = {
 }
 ```
 
-## Track metrics
+## Track events
+
+```ruby
+# Tracks payload with metric=1 and tags it 'event'
+🛎 service: 'User created'
+```
+
+## Track meter readings
 
 ```ruby
 🌡 service: 'Rails req/s', metric: 400, state: 'normal'
@@ -25,7 +32,8 @@ Mettric.config = {
 
 ```ruby
 # This will track the duration in milliseconds as the `metric` value
-⏱ (service: 'Duration of sleeping 1 sec') do
+# as "Sleep duration ms" (note the added ' ms') and tag it 'timing'
+⏱ (service: 'Sleep duration') do
   sleep 1
 end
 ```
