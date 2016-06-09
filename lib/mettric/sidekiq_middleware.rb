@@ -5,19 +5,30 @@ class Mettric::SidekiqMiddleware
   end
 
   def call(worker, msg, queue)
-    opts = worker.class.sidekiq_options['mettric']
+    begin
+      opts = worker.class.sidekiq_options['mettric']
 
-    # Don't do anything if we're told to skip this class
-    if opts != true and opts != nil
-      return yield
+      # Don't do anything if we're told to skip this class
+      if opts != true and opts != nil
+        return yield
+      end
+
+      # Tracking under this name
+      service = "sidekiq.queue:#{queue.to_s.underscore}.worker:#{worker.class.name.underscore}"
+
+      # Yield & time
+      Mettric.time(service: "#{service}.duration", tags: ['sidekiq']) do
+        yield
+      end
+    rescue
+      Mettric.event(service: "#{service}.error", tags: ['sidekiq'])
+      raise
     end
 
-    # Track the job timing
-    service = "sidekiq.queue:#{queue.to_s.underscore}.worker:#{worker.class.name.underscore} ms"
-    Mettric.time(service: service, tags: ['sidekiq']) do
-      yield
-    end
+    # Track success
+    Mettric.event(service: "#{service}.success", tags: ['sidekiq'])
   end
+
 end
 
 if Kernel.const_defined?(:Sidekiq)

@@ -27,32 +27,38 @@ describe Mettric::SidekiqMiddleware do
     it 'null' do
       expect(Mettric).to receive(:time)
       Mettric::SidekiqMiddleware.new({}).call(NullWorker.new, :msg, :queue) do
-        puts :noop
+        '¯\_(ツ)_/¯'
       end
     end
 
     it 'skip' do
       expect(Mettric).to_not receive(:time)
       Mettric::SidekiqMiddleware.new({}).call(SkipWorker.new, :msg, :queue) do
-        puts :noop
+        '¯\_(ツ)_/¯'
       end
     end
 
     it 'false' do
       expect(Mettric).to_not receive(:time)
       Mettric::SidekiqMiddleware.new({}).call(FalseWorker.new, :msg, :queue) do
-        puts :noop
+        '¯\_(ツ)_/¯'
       end
     end
 
     it 'true' do
-      expected = {
-        service: 'sidekiq.queue:my_queue.worker:true_worker ms',
+      expected_time = {
+        service: 'sidekiq.queue:my_queue.worker:true_worker.duration',
         tags: ['sidekiq']
       }
-      expect(Mettric).to receive(:time).with(expected)
+      expect(Mettric).to receive(:time).with(expected_time)
+
+      expected_event = {
+        service: 'sidekiq.queue:my_queue.worker:true_worker.success',
+        tags: ['sidekiq']
+      }
+      expect(Mettric).to receive(:event).with(expected_event)
       Mettric::SidekiqMiddleware.new({}).call(TrueWorker.new, {}, :my_queue) do
-        puts :noop
+        '¯\_(ツ)_/¯'
       end
     end
   end

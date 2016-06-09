@@ -42,8 +42,8 @@ class Mettric
       exception = e
       state = 'failure'
     end
-    payload[:service] = "#{payload[:service]} ms" unless payload[:service].to_s.end_with?(' ms')
     payload[:metric] = ((Time.now - start) * 1000).to_i
+    payload[:description] = [payload[:description], "(ms)"].compact.join(' ')
     payload[:tags] ||= []
     payload[:tags] << :timing
     track(payload)
