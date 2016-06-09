@@ -28,7 +28,8 @@ class Mettric::SidekiqMiddleware
     # Track success
     Mettric.event(service: "#{service}.success", tags: ['sidekiq'])
   end
-
+rescue => e
+  raise unless e.is_a?(Mettric::Error)
 end
 
 if Kernel.const_defined?(:Sidekiq)
