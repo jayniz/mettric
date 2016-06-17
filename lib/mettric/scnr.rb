@@ -6,7 +6,7 @@ rescue Mettric::CouldNotStartWorkerThread
   puts "***WARNING***  Mettric::CouldNotStartWorkerThread raised"
 end
 
-# A meter
+# A meter reading
 def 🌡 (payload)
   Mettric.meter(payload)
 rescue Mettric::CouldNotStartWorkerThread
