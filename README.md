@@ -1,6 +1,6 @@
 # Mettric
 
-Track to riemann.
+Tracks events, meter readings and timings to [riemann.io](http://riemann.io) in a background thread using [riemann-ruby-client](https://github.com/riemann/riemann-ruby-client). Fire and forget. 
 
 ## Configuration
 
@@ -37,3 +37,7 @@ Mettric.config = {
   sleep 1
 end
 ```
+
+## For grown ups
+
+Just in case you don't want to use the silly methods names, please know that the emoji variants of above methods just call `Mettric.event(payload)`, `Mettric.meter(payload` and `Mettric.time(paylod) { ... }` respectively. Be aware, though, that the emoji methods ignore a misconfigured or unavailable riemann server by rescuing `Mettric::CouldNotStartWorkerThread` exceptions. The non-emoji methods will throw that exception. Just have a look at [lib/mettric/scnr.rb](lib/mettric/scnr.rb) and you'll see what I mean.
