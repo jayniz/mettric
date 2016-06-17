@@ -1,6 +1,18 @@
 require 'active_support/inflector'
 
 class Mettric::SidekiqMiddleware
+
+  def self.install
+    return if @installed
+    return unless Kernel.const_defined?(:Sidekiq)
+    @installed = true
+    Sidekiq.configure_server do |config|
+      config.server_middleware do |chain|
+        chain.add Mettric::SidekiqMiddleware
+      end
+    end
+  end
+
   def initialize(_options = {})
   end
 
@@ -30,13 +42,5 @@ class Mettric::SidekiqMiddleware
   end
 rescue => e
   raise unless e.is_a?(Mettric::Error)
-end
-
-if Kernel.const_defined?(:Sidekiq)
-  Sidekiq.configure_server do |config|
-    config.server_middleware do |chain|
-      chain.add Mettric::SidekiqMiddleware
-    end
-  end
 end
 

@@ -7,9 +7,20 @@ class Mettric
   end
 
   def self.config=(config)
+    # See if the config is valid
     config_test = Client.new(config)
     config_test.close
+
+    # Set the config
     @config = config
+
+    # Attempt to install sidekiq middleware unless
+    # we're told not to
+    if config.delete(:sidekiq_middleware) != false
+      Mettric::SidekiqMiddleware.install
+    end
+
+    @config
   end
 
   def self.track(payload)

@@ -14,9 +14,9 @@ describe Mettric do
         service: :test_timing,
         metric: instance_of(Fixnum),
         description: '(ms)',
-        tags: [:timing])
+        tags: [:something, :timing])
       expect(Mettric).to receive(:track).with(expected)
-      ⏱(service: :test_timing) do
+      ⏱(service: :test_timing, tags: [:something]) do
         '¯\_(ツ)_/¯'
       end
     end
