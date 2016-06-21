@@ -92,7 +92,7 @@ Let's assume you have sidekiq worker class called `MyWorker` that uses the `my_q
 ```ruby
 {
   host: 'override',
-  service: 'my_app.sidekiq.queue:my_queue.worker:my_worker.duration',
+  service: 'my_app.sidekiq.my_queue.my_worker.duration',
   metric: 80,
   tags: ['sidekiq']
 }
@@ -103,7 +103,7 @@ Also, it will track the success
 ```ruby
 {
   host: 'override',
-  service: 'my_app.sidekiq.queue:my_queue.worker:my_worker.success',
+  service: 'my_app.sidekiq.my_queue.my_worker.success',
   metric: 1,
   tags: ['event']
 }
@@ -114,7 +114,7 @@ or error
 ```ruby
 {
   host: 'override',
-  service: 'my_app.sidekiq.queue:my_queue.worker:my_worker.error',
+  service: 'my_app.sidekiq.my_queue.my_worker.error',
   metric: 1,
   tags: ['event']
 }

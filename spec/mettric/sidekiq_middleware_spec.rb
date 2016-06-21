@@ -47,13 +47,13 @@ describe Mettric::SidekiqMiddleware do
 
     it 'true' do
       expected_time = {
-        service: 'sidekiq.queue:my_queue.worker:true_worker.duration',
+        service: 'sidekiq.my_queue.true_worker.duration',
         tags: ['sidekiq']
       }
       expect(Mettric).to receive(:time).with(expected_time)
 
       expected_event = {
-        service: 'sidekiq.queue:my_queue.worker:true_worker.success',
+        service: 'sidekiq.my_queue.true_worker.success',
         tags: ['sidekiq']
       }
       expect(Mettric).to receive(:event).with(expected_event)
