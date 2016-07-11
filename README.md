@@ -82,7 +82,7 @@ end
 
 ### For grown ups
 
-Just in case you don't want to use the silly methods names, please know that the emoji variants of above methods just call `Mettric.event(payload)`, `Mettric.meter(payload` and `Mettric.time(paylod) { ... }` respectively. Be aware, though, that the emoji methods ignore a misconfigured or unavailable riemann server by rescuing `Mettric::CouldNotStartWorkerThread` exceptions. The non-emoji methods will throw that exception. Just have a look at [lib/mettric/scnr.rb](lib/mettric/scnr.rb) and you'll see what I mean.
+Just in case you don't want to use the silly methods names, please know that the emoji variants of above methods just call `Mettric.event(payload)`, `Mettric.meter(payload` and `Mettric.time(payload) { ... }` respectively. Be aware, though, that the emoji methods ignore a misconfigured or unavailable riemann server by rescuing `Mettric::CouldNotStartWorkerThread` exceptions. The non-emoji methods will throw that exception. Just have a look at [lib/mettric/scnr.rb](lib/mettric/scnr.rb) and you'll see what I mean.
 
 
 ## Sidekiq
