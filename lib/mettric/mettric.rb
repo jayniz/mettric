@@ -45,10 +45,11 @@ class Mettric
   # To track durations
   def self.time(payload)
     exception = nil
+    result = nil
     state = 'success'
     start = Time.now
     begin
-      yield
+      result = yield
     rescue => e
       exception = e
       state = 'failure'
@@ -57,7 +58,7 @@ class Mettric
     payload[:description] = [payload[:description], "(ms)"].compact.join(' ')
     payload[:tags] ||= []
     payload[:tags] << :timing
-    result = track(payload)
+    track(payload)
     raise exception if exception
     result
   end
