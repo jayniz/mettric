@@ -57,7 +57,9 @@ class Mettric
     payload[:description] = [payload[:description], "(ms)"].compact.join(' ')
     payload[:tags] ||= []
     payload[:tags] << :timing
-    track(payload)
+    result = track(payload)
+    raise exception if exception
+    result
   end
 
   def self.ensure_worker_running
