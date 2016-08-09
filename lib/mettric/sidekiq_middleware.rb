@@ -36,7 +36,7 @@ class Mettric::SidekiqMiddleware
     Mettric.event(service: "#{service}.success", tags: ['sidekiq'])
   rescue => e
     Mettric.event(service: "#{service}.failure", tags: ['sidekiq', 'error'], description: e.to_s)
-    raise unless e.is_a?(Mettric::Error)
+    raise unless e < Mettric::Error
   end
 end
 
