@@ -1,3 +1,7 @@
+0.3.3 (2016-08-09)
+==================
+- Fix code for not raising Mettric::Errors more more
+
 0.3.2 (2016-08-09)
 ==================
 - Fix code for not raising Mettric::Errors more

@@ -38,7 +38,7 @@ class Mettric::SidekiqMiddleware
     🛎(service: "#{service}.failure", tags: ['sidekiq', 'error'], description: e.to_s) rescue nil
 
     # Make sure we don't cause trouble
-    raise unless e < Mettric::Error
+    raise unless e.class < Mettric::Error
   end
 end
 
