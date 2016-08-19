@@ -65,19 +65,60 @@ Upon configuration, Mettric will install a [sidekiq](http://sidekiq.org/) middle
 ### Time things
 
 ```ruby
-⏱ (service: 'test.slept', tags: [:tired]) do
+⏱ service: 'test.sleep', tags: [:tired] do
   sleep 1
 end
+```
 
-# Will send the following payload via riemann-ruby-client:
-#
-# {
-#    host: 'override',
-#    service: 'my_app.test.slept',
-#    metric: 1000,
-#    description: '(ms)',
-#    tags: ['timing', 'tired']
-# }
+Above snippet will send the following payloads via riemann-ruby-client:
+
+```json
+[
+  {
+     "host": "override",
+     "service": "my_app.test.slept.duration",
+     "metric": 1000,
+     "description": "(ms)",
+     "tags": ["timing", "tired"]
+  },
+  {
+     "host": "override",
+     "service": "my_app.test.success",
+     "metric": 1,
+     "description": "(ms)",
+     "tags": ["event", "tired"]
+  }
+]
+```
+
+Exceptions in your code are also handled:
+
+```ruby
+⏱ service: 'test.sleep', tags: [:tired] do
+  sleep 1
+  raise "My ambition is handicapped by laziness"
+end
+```
+
+Above snippet will send the following payloads (and then raise
+your exception):
+
+```json
+[
+  {
+     "host": "override",
+     "service": "my_app.test.sleep.duration",
+     "metric": 1000,
+     "description": "(ms)",
+     "tags": ["timing", "tired"]
+  },
+  {
+     "host": "override",
+     "service": "my_app.test.sleep.failure",
+     "metric": 1,
+     "description": "My ambition is handicapped by laziness",
+     "tags": ["event", "tired"]
+  }
 ```
 
 ### For grown ups

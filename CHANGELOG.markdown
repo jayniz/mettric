@@ -1,3 +1,7 @@
+1.0.0 (2016-08-19)
+==================
+- Change behaviour of Mettric.time and ⏱
+
 0.3.3 (2016-08-09)
 ==================
 - Fix code for not raising Mettric::Errors more more
