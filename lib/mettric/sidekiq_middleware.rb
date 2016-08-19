@@ -28,17 +28,10 @@ class Mettric::SidekiqMiddleware
     service = "sidekiq.#{queue.to_s.underscore}.#{worker.class.name.underscore}"
 
     # Yield & time
-    ⏱(service: "#{service}.duration", tags: ['sidekiq']) do
+    ⏱(service: service, tags: ['sidekiq']) do
       yield
     end
-
-    # Track success
-    🛎(service: "#{service}.success", tags: ['sidekiq'])
-  rescue => e
-    🛎(service: "#{service}.failure", tags: ['sidekiq', 'error'], description: e.to_s) rescue nil
-
-    # Make sure we don't cause trouble
-    raise unless e.class < Mettric::Error
+  rescue Mettric::Error => _e
   end
 end
 

@@ -1,4 +1,4 @@
-1.0.0 (2016-08-19)
+1.0.1 (2016-08-19)
 ==================
 - Change behaviour of Mettric.time and ⏱
 
