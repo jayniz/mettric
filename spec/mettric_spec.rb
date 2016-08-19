@@ -9,18 +9,44 @@ describe Mettric do
     end
   end
   context 'timing things' do
-    it "times" do
-      expected = hash_including(
-        service: :test_timing,
+    it 'success' do
+      expected_timing_data = hash_including(
+        service: 'test_timing.duration',
         metric: instance_of(Fixnum),
         description: '(ms)',
         tags: [:something, :timing])
-      expect(Mettric).to receive(:track).with(expected)
-      ⏱(service: :test_timing, tags: [:something]) do
+      expect(Mettric).to receive(:track).with(expected_timing_data)
+
+      expected_success_data = hash_including(
+        service: 'test_timing.success',
+        tags: [:something])
+      expect(Mettric).to receive(:event).with(expected_success_data)
+
+      ⏱(service: 'test_timing', tags: [:something]) do
         '¯\_(ツ)_/¯'
       end
     end
 
+    it 'failure' do
+      expected_timing_data = hash_including(
+        service: 'test_timing.duration',
+        metric: instance_of(Fixnum),
+        description: '(ms)',
+        tags: [:something, :timing])
+      expect(Mettric).to receive(:track).with(expected_timing_data)
+
+      expected_success_data = hash_including(
+        service: 'test_timing.failure',
+        tags: [:something],
+        description: "My ambition is handicapped by laziness")
+      expect(Mettric).to receive(:event).with(expected_success_data)
+
+      expect {
+        ⏱(service: 'test_timing', tags: [:something]) do
+          raise "My ambition is handicapped by laziness"
+        end
+      }.to raise_error "My ambition is handicapped by laziness"
+    end
   end
   context 'worker thread' do
     it "doesn't mind if there is no mettric configured" do
