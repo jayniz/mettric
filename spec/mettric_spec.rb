@@ -22,9 +22,10 @@ describe Mettric do
         tags: [:something])
       expect(Mettric).to receive(:event).with(expected_success_data)
 
-      ⏱(service: 'test_timing', tags: [:something]) do
+      result = ⏱(service: 'test_timing', tags: [:something]) do
         '¯\_(ツ)_/¯'
       end
+      expect(result).to eq '¯\_(ツ)_/¯'
     end
 
     it 'failure' do

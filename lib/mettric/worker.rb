@@ -20,7 +20,6 @@ class Mettric::Worker
         deliver(client, payload)
       end
     end
-    binding.pry
   end
 
   def stop

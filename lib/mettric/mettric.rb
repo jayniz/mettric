@@ -54,18 +54,24 @@ class Mettric
       exception = e
       state = 'failure'
     end
-    timing_payload = payload.dup
-    timing_payload[:service] = "#{payload[:service]}.duration"
-    timing_payload[:metric] = ((Time.now - start) * 1000).to_i
-    timing_payload[:description] = [payload[:description], "(ms)"].compact.join(' ')
-    timing_payload[:tags] = (payload[:tags] || []) + [:timing]
-    track(timing_payload)
+
+    # Be super conservative, always return the result
+    begin
+      timing_payload = payload.dup
+      timing_payload[:service] = "#{payload[:service]}.duration"
+      timing_payload[:metric] = ((Time.now - start) * 1000).to_i
+      timing_payload[:description] = [payload[:description], "(ms)"].compact.join(' ')
+      timing_payload[:tags] = (payload[:tags] || []) + [:timing]
+      track(timing_payload)
+    rescue
+      result
+    end
 
     if exception
-      event(service: "#{payload[:service]}.failure", tags: payload[:tags], description: exception.to_s)
+      event(service: "#{payload[:service]}.failure", tags: payload[:tags], description: exception.to_s) rescue nil
       raise exception
     else
-      event(service: "#{payload[:service]}.success", tags: payload[:tags])
+      event(service: "#{payload[:service]}.success", tags: payload[:tags]) rescue result
     end
     result
   end

@@ -1,3 +1,7 @@
+1.0.2 (2016-08-19)
+==================
+- Make Mettric.time more robust to rieman-server errors
+
 1.0.1 (2016-08-19)
 ==================
 - Change behaviour of Mettric.time and ⏱
