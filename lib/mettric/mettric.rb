@@ -71,7 +71,7 @@ class Mettric
       event(service: "#{payload[:service]}.failure", tags: payload[:tags], description: exception.to_s) rescue nil
       raise exception
     else
-      event(service: "#{payload[:service]}.success", tags: payload[:tags]) rescue result
+      event(service: "#{payload[:service]}.success", tags: payload[:tags])
     end
     result
   end

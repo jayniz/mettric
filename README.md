@@ -96,7 +96,7 @@ Exceptions in your code are also handled:
 ```ruby
 ⏱ service: 'test.sleep', tags: [:tired] do
   sleep 1
-  raise "My ambition is handicapped by laziness"
+  raise "My ambition is handicapped by my laziness"
 end
 ```
 
@@ -116,7 +116,7 @@ your exception):
      "host": "override",
      "service": "my_app.test.sleep.failure",
      "metric": 1,
-     "description": "My ambition is handicapped by laziness",
+     "description": "My ambition is handicapped by my laziness",
      "tags": ["event", "tired"]
   }
 ```

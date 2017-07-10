@@ -39,14 +39,14 @@ describe Mettric do
       expected_success_data = hash_including(
         service: 'test_timing.failure',
         tags: [:something],
-        description: "My ambition is handicapped by laziness")
+        description: "My ambition is handicapped by my laziness")
       expect(Mettric).to receive(:event).with(expected_success_data)
 
       expect {
         ⏱(service: 'test_timing', tags: [:something]) do
-          raise "My ambition is handicapped by laziness"
+          raise "My ambition is handicapped by my laziness"
         end
-      }.to raise_error "My ambition is handicapped by laziness"
+      }.to raise_error "My ambition is handicapped by my laziness"
     end
   end
   context 'worker thread' do
