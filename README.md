@@ -1,5 +1,7 @@
 # Mettric
 
+![Hector Salamanca](https://vignette.wikia.nocookie.net/breakingbad/images/3/34/TioSalamanca.jpg)
+
 Tracks events, meter readings and timings to [riemann.io](http://riemann.io) in a background thread using [riemann-ruby-client](https://github.com/riemann/riemann-ruby-client). Fire and forget.
 
 Mettric will also prepend your app's name to the services you track with riemann and set the reporting host and tags automatically.
